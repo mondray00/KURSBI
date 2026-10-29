@@ -24,24 +24,25 @@ BI_URL = os.getenv("BI_URL", "https://www.bi.go.id/id/statistik/informasi-kurs/t
 def scrape_via_worker(headless: bool):
     import os
     import sys
+    import tempfile
     
-    # Otomatis install jika berjalan di server Linux Streamlit Cloud
     if sys.platform.startswith('linux'):
         os.system(f"{sys.executable} -m playwright install --with-deps")
         
     with tempfile.TemporaryDirectory(prefix="bi_scrape_") as tmp:
         result_file = Path(tmp) / "result.json"
         command = [
-            sys.executable, 
+            sys.executable,
             str(BASE_DIR / "scraper_worker.py"),
             "--output", str(result_file),
             "--headless", "true" if headless else "false"
         ]
+        
+        proc = subprocess.run(
+            command, cwd=str(BASE_DIR), capture_output=True, text=True,
+            timeout=180, check=False
+        )
 
-                    command = [
-            sys.executable,
-            # ... isi command ...
-        ]
         
         proc = subprocess.run(
             command, cwd=str(BASE_DIR), capture_output=True, text=True,
