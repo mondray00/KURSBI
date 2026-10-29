@@ -60,7 +60,7 @@ def scrape_kurs(headless: bool = False) -> tuple[str, list[dict]]:
     """Ambil snapshot tabel yang *sedang ditampilkan*, tidak mengambil histori otomatis."""
     timeout_ms = int(os.getenv("SCRAPE_TIMEOUT_MS", "60000"))
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=headless)
+        browser = p.chromium.launch(headless=headless, env={"PLAYWRIGHT_BROWSERS_PATH": "/home/appuser/.cache/ms-playwright"})
         try:
             page = browser.new_page(locale="id-ID", viewport={"width": 1440, "height": 900})
             page.goto(BI_URL, wait_until="domcontentloaded", timeout=timeout_ms)
