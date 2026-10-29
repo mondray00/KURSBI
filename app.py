@@ -12,6 +12,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+os.system("python -m playwright install")
+
 from database import init_db, read_all, save_records, DB_PATH
 from excel_importer import preview_excel, import_records
 from dotenv import load_dotenv
