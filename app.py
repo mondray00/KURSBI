@@ -38,10 +38,16 @@ def scrape_via_worker(headless: bool):
             "--headless", "true" if headless else "false"
         ]
 
-            proc = subprocess.run(
-                command, cwd=str(BASE_DIR), capture_output=True, text=True,
-                timeout=180, check=False
-            )
+                    command = [
+            sys.executable,
+            # ... isi command ...
+        ]
+        
+        proc = subprocess.run(
+            command, cwd=str(BASE_DIR), capture_output=True, text=True,
+            timeout=180, check=False
+        )
+
         if proc.returncode != 0:
             detail = (proc.stderr or proc.stdout or "Unknown worker failure").strip()
             raise RuntimeError(f"Scraper subprocess gagal (exit {proc.returncode}):\n{detail[-4500:]}")
