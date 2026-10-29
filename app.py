@@ -23,17 +23,25 @@ BI_URL = os.getenv("BI_URL", "https://www.bi.go.id/id/statistik/informasi-kurs/t
 
 def scrape_via_worker(headless: bool):
     import os
-    os.system("python -m playwright install --with-deps")
-    """Run Playwright in its own Python process (Windows subprocess-safe)."""
+    import sys
+    
+    # Otomatis install jika berjalan di server Linux Streamlit Cloud
+    if sys.platform.startswith('linux'):
+        os.system(f"{sys.executable} -m playwright install --with-deps")
+        
     with tempfile.TemporaryDirectory(prefix="bi_scrape_") as tmp:
         result_file = Path(tmp) / "result.json"
-        command = ["/home/adminuser/venv/bin/python", str(BASE_DIR / "scraper_worker.py"),
-                   "--output", str(result_file),
-                   "--headless", "true" if headless else "false"]
-        proc = subprocess.run(
-            command, cwd=str(BASE_DIR), capture_output=True, text=True,
-            timeout=180, check=False
-        )
+        command = [
+            sys.executable, 
+            str(BASE_DIR / "scraper_worker.py"),
+            "--output", str(result_file),
+            "--headless", "true" if headless else "false"
+        ]
+
+            proc = subprocess.run(
+                command, cwd=str(BASE_DIR), capture_output=True, text=True,
+                timeout=180, check=False
+            )
         if proc.returncode != 0:
             detail = (proc.stderr or proc.stdout or "Unknown worker failure").strip()
             raise RuntimeError(f"Scraper subprocess gagal (exit {proc.returncode}):\n{detail[-4500:]}")
