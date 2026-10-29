@@ -1,6 +1,7 @@
 """Scraper tabel Kurs Transaksi BI. Menjalankan browser lokal; tidak memakai SOAP API."""
 import os
 import re
+os.system("python -m playwright install --with-deps")
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
