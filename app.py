@@ -27,7 +27,7 @@ def scrape_via_worker(headless: bool):
     """Run Playwright in its own Python process (Windows subprocess-safe)."""
     with tempfile.TemporaryDirectory(prefix="bi_scrape_") as tmp:
         result_file = Path(tmp) / "result.json"
-        command = [sys.executable, str(BASE_DIR / "scraper_worker.py"),
+        command = ["/home/adminuser/venv/bin/python", str(BASE_DIR / "scraper_worker.py"),
                    "--output", str(result_file),
                    "--headless", "true" if headless else "false"]
         proc = subprocess.run(
