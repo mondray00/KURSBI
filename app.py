@@ -12,9 +12,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-os.system("python -m playwright install")
-os.system("python -m playwright install-deps")
-
 from database import init_db, read_all, save_records, DB_PATH
 from excel_importer import preview_excel, import_records
 from dotenv import load_dotenv
@@ -25,6 +22,8 @@ BI_URL = os.getenv("BI_URL", "https://www.bi.go.id/id/statistik/informasi-kurs/t
 
 
 def scrape_via_worker(headless: bool):
+    import os
+    os.system("python -m playwright install --with-deps")
     """Run Playwright in its own Python process (Windows subprocess-safe)."""
     with tempfile.TemporaryDirectory(prefix="bi_scrape_") as tmp:
         result_file = Path(tmp) / "result.json"
