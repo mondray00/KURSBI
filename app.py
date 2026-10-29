@@ -13,6 +13,7 @@ import plotly.express as px
 import streamlit as st
 
 os.system("python -m playwright install")
+os.system("python -m playwright install-deps")
 
 from database import init_db, read_all, save_records, DB_PATH
 from excel_importer import preview_excel, import_records
